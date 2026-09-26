@@ -79,9 +79,15 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml run --rm minio-in
   mc ls local
 ```
 
-Create application topics explicitly—the broker disables automatic topic creation by default:
+The broker disables automatic topic creation. `kafka-init` explicitly provisions the `document.uploaded` topic every time the stack starts; creating an existing topic is safe.
 
 ```sh
+# Verify the automatically provisioned topic.
+docker compose -f docker-compose.yml -f docker-compose.dev.yml exec kafka \
+  /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 \
+  --describe --topic document.uploaded
+
+# Create another application topic explicitly.
 docker compose -f docker-compose.yml -f docker-compose.dev.yml exec kafka \
   /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9092 \
   --create --if-not-exists --topic your.topic --partitions 1 --replication-factor 1
