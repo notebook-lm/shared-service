@@ -1,0 +1,9 @@
+services:
+  kafka:
+    restart: unless-stopped
+
+  kafka-ui:
+    restart: unless-stopped
+
+  minio:
+    restart: unless-stopped
