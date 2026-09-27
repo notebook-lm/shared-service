@@ -47,6 +47,12 @@ services:
           --topic document.processing \
           --partitions 1 \
           --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:9092 \
+          --create --if-not-exists \
+          --topic document.processed \
+          --partitions 1 \
+          --replication-factor 1
     networks:
       - shared
     restart: "no"
