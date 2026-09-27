@@ -31,8 +31,6 @@ services:
     depends_on:
       kafka:
         condition: service_healthy
-    environment:
-      KAFKA_TOPIC_DOCUMENT_UPLOADED: ${KAFKA_TOPIC_DOCUMENT_UPLOADED:-document.uploaded}
     entrypoint:
       - /bin/sh
       - -ec
@@ -40,7 +38,13 @@ services:
         /opt/kafka/bin/kafka-topics.sh \
           --bootstrap-server kafka:9092 \
           --create --if-not-exists \
-          --topic "$${KAFKA_TOPIC_DOCUMENT_UPLOADED}" \
+          --topic document.uploaded \
+          --partitions 1 \
+          --replication-factor 1
+        /opt/kafka/bin/kafka-topics.sh \
+          --bootstrap-server kafka:9092 \
+          --create --if-not-exists \
+          --topic document.processing \
           --partitions 1 \
           --replication-factor 1
     networks:
